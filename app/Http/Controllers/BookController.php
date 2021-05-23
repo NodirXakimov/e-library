@@ -38,7 +38,7 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-    //    try {
+       try {
             $book = new Book();
             $book->name = $request->name;
             $book->author = $request->author;
@@ -46,10 +46,10 @@ class BookController extends Controller
             $book->publisher_name = $request->publisher_name;
             $book->qr_code = Str::random(20);
             $book->save();
-            // return redirect('books')->with('status', 'Book added !!!');
-    //    } catch (\Throwable $th) {
-    //        throw $th;
-    //    }
+            return redirect('books')->with('status', 'Book added !!!');
+       } catch (\Throwable $th) {
+           throw $th;
+       }
 
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentRequest;
 use App\Student;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::all();
+        $students = Student::paginate(10);
         return view('admin.students', ['students' => $students]);
     }
 
@@ -34,9 +35,15 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StudentRequest $request)
     {
-        //
+        try {
+            $student = new Student($request->all());
+            $student->save();
+            return redirect('students')->with('status', 'Student added !!!');
+       } catch (\Throwable $th) {
+           throw $th;
+       }
     }
 
     /**

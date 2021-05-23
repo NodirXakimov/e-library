@@ -19,6 +19,11 @@
                     <i class="zmdi zmdi-plus"></i>add student</a>
             </div>
         </div>
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
         <div class="table-responsive table--no-card m-b-20">
             <table class="table table-borderless table-striped table-earning">
                 <thead>
@@ -49,6 +54,7 @@
                 </tbody>
             </table>
         </div>
+        {{ $students->links() }}
     @else
         <p>There is no any students</p>
     @endif
