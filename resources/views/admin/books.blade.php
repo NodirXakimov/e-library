@@ -15,6 +15,8 @@
                 </div>
             </div>
             <div class="table-data__tool-right">
+                <a class="au-btn au-btn-icon au-btn--blue au-btn--small" style="color: white" href="{{ route("importBook") }}">
+                    <i class="zmdi zmdi-download"></i>Import from Excel</a>
                 <a class="au-btn au-btn-icon au-btn--green au-btn--small" style="color: white" href="{{ route("books.create") }}">
                     <i class="zmdi zmdi-plus"></i>add book</a>
             </div>

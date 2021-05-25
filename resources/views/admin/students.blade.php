@@ -15,6 +15,8 @@
                 </div>
             </div>
             <div class="table-data__tool-right">
+                <a class="au-btn au-btn-icon au-btn--blue au-btn--small" style="color: white" href="{{ route("importStudents") }}">
+                    <i class="zmdi zmdi-download"></i>Import from Excel</a>
                 <a class="au-btn au-btn-icon au-btn--blue au-btn--small" style="color: white" href="{{ route("students.create") }}">
                     <i class="zmdi zmdi-plus"></i>add student</a>
             </div>
@@ -92,7 +94,7 @@
                                     </table>
                                 </div>
                                 <div class="col col-5">
-                                    <img src="" alt="Student image" style="width:300px; border-radius:20%">
+                                    <img src="" alt="Student image" style="width:300px; border-radius:10%">
                                 </div>
                             </div>
 						</div>

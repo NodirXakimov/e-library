@@ -7,6 +7,9 @@ use App\Book;
 use App\Debtor;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\BookImport;
+use App\Imports\StudentImport;
 
 class FetchController extends Controller
 {
@@ -66,6 +69,18 @@ class FetchController extends Controller
             throw $th;
         }
         
+    }
+
+    public function importBook(Request $request)
+    {
+        $books = Excel::import(new BookImport(), $request->file('file'));
+        return redirect()->route('books.index');
+    }
+
+    public function importStudent(Request $request)
+    {
+        $students = Excel::import(new StudentImport(), $request->file('file'));
+        return redirect()->route('students.index');
     }
 
     /**

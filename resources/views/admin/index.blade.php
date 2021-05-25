@@ -130,7 +130,7 @@
                                 <p>Email: <strong>${result.data.email}</strong></p>
                             </div>
                             <div class="col col-md-5">
-                                <img src="{{ asset('storage/${result.data.image}') }}" alt="Student's photo" style="width:300px; border-radius:30%">
+                                <img src="{{ asset('storage/${result.data.image}') }}" alt="Student's photo" style="width:300px; border-radius:5%">
                             </div>
                         </div>
                            

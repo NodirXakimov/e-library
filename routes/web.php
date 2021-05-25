@@ -21,6 +21,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/students', 'StudentController');
     Route::resource('/books', 'BookController');
     Route::resource('/debtors', 'DebtorController');
+    Route::view('/importBooks', 'admin.import_book')->name('importBook');
+    Route::post('/importBooks', 'FetchController@importBook')->name('import_books');
+    Route::view('/importStudents', 'admin.import_student')->name('importStudents');
+    Route::post('/importStudents', 'FetchController@importStudent')->name('import_students');
     Route::get('/main', function(){
         return view('admin.index');
     })->name('dashboard');
