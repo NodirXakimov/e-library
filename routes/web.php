@@ -13,9 +13,7 @@
 
 use App\Debtor;
 
-Route::get('/home', function () {
-    return view('welcome');
-});
+Route::redirect('/', 'main', 301);
 
 Route::resource('/customers', 'CustomerController');
 Route::resource('/students', 'StudentController');
@@ -33,10 +31,6 @@ Route::middleware(['auth'])->group(function () {
     
 });
 
-Route::get('/test', function(){
-    return "Hello world";
-})->name('test');
-
 Route::prefix('api')->group(function () {
     Route::get('/students', 'FetchController@index')->name("getAllStudents");
     Route::get('/students/{id}', 'FetchController@getStudent')->name("getStudent");
@@ -44,6 +38,4 @@ Route::prefix('api')->group(function () {
     Route::post('/attach', 'FetchController@attach')->name("attach");
 });
 
-Route::get('/test', function () {
-    return Debtor::find(1)->student;
-});
+Route::view('/test', 'ajax');
