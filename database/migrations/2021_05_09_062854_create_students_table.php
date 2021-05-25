@@ -20,6 +20,7 @@ class CreateStudentsTable extends Migration
             $table->string('middlename');
             $table->string('email');
             $table->string('group');
+            $table->string('image')->default('images/default_student.png');
             $table->tinyInteger('course');
             $table->string('phone_number');
             $table->timestamps();

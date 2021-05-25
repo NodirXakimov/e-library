@@ -13,14 +13,15 @@
 
 use App\Debtor;
 
-Route::redirect('/', 'main', 301);
-
-Route::resource('/customers', 'CustomerController');
-Route::resource('/students', 'StudentController');
-Route::resource('/books', 'BookController');
-Route::resource('/debtors', 'DebtorController');
-
+Route::redirect('/', '/main', 301);
 Auth::routes();
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/customers', 'CustomerController');
+    Route::resource('/students', 'StudentController');
+    Route::resource('/books', 'BookController');
+    Route::resource('/debtors', 'DebtorController');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -32,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::prefix('api')->group(function () {
+
     Route::get('/students', 'FetchController@index')->name("getAllStudents");
     Route::get('/students/{id}', 'FetchController@getStudent')->name("getStudent");
     Route::get('/books/{id}', 'FetchController@getBook')->name("getBook");

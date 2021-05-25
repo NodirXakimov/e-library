@@ -39,6 +39,11 @@ class StudentController extends Controller
     {
         try {
             $student = new Student($request->all());
+            if($request->hasFile('image'))
+            {
+                $path = $request->image->store('images', 'public');
+                $student->image = $path;
+            }
             $student->save();
             return redirect('students')->with('status', 'Student added !!!');
        } catch (\Throwable $th) {
