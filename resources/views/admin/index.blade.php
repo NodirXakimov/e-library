@@ -101,6 +101,7 @@
         </button>
     </div>
 </div>
+
 @endsection
 
 @section('script')
@@ -122,9 +123,17 @@
                         $("#alert").hide();
                         $('#card-header').html(result.data.lastname + " " + result.data.firstname + ' ' + result.data.middlename);   
                         let body = `
-                            <p>Group: <strong>${result.data.group}</strong></p>
-                            <p>Phone number: <strong>${result.data.phone_number}</strong></p>
-                            <p>Email: <strong>${result.data.email}</strong></p>
+                        <div class="row">
+                            <div class="col col-md-7">
+                                <p>Group: <strong>${result.data.group}</strong></p>
+                                <p>Phone number: <strong>${result.data.phone_number}</strong></p>
+                                <p>Email: <strong>${result.data.email}</strong></p>
+                            </div>
+                            <div class="col col-md-5">
+                                <img src="{{ asset('storage/${result.data.image}') }}" alt="Student's photo" style="width:300px; border-radius:30%">
+                            </div>
+                        </div>
+                           
                         `;
                         $('#card-body').html(body);   
                         $("#card").show();
