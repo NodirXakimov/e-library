@@ -21,19 +21,15 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/students', 'StudentController');
     Route::resource('/books', 'BookController');
     Route::resource('/debtors', 'DebtorController');
+    Route::get('/main', function(){
+        return view('admin.index');
+    })->name('dashboard');
+
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/main', function(){
-        return view('admin.index');
-    })->name('dashboard');
-    
-});
-
 Route::prefix('api')->group(function () {
-
     Route::get('/students', 'FetchController@index')->name("getAllStudents");
     Route::get('/students/{id}', 'FetchController@getStudent')->name("getStudent");
     Route::get('/books/{id}', 'FetchController@getBook')->name("getBook");
