@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StudentRequest;
 use App\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -82,7 +83,17 @@ class StudentController extends Controller
      */
     public function update(StudentRequest $request, Student $student)
     {
-        return $request;
+        $path = $student->image;
+        $student->update($request->all());
+        if($request->hasFile('image'))
+        {
+            if($path != 'images/default_student.png')
+            Storage::delete('public/' . $path);
+            $path = $request->image->store('images', 'public');
+            $student->image = $path;
+            $student->save();
+        }
+        return redirect('students')->with('status', 'Student has been updated successfully !!!');
     }
 
     /**

@@ -94,7 +94,7 @@
                                     </table>
                                 </div>
                                 <div class="col col-5">
-                                    <img src="" alt="Student image" style="width:300px; border-radius:10%">
+                                    <img src="" alt="Student image" style="width:300px;">
                                 </div>
                             </div>
 						</div>
