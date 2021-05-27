@@ -45,8 +45,7 @@
     <div class="col-lg-7">
         <div class="card">
             <div class="card-header">
-                <strong>Select book(s)</strong>
-                <small> Form</small>
+                <strong>Select book ( Scan QR code of the book )</strong> 
             </div>
             <div class="card-body card-block">
                 <div class="card-title">

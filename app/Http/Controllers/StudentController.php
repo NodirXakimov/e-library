@@ -83,17 +83,21 @@ class StudentController extends Controller
      */
     public function update(StudentRequest $request, Student $student)
     {
-        $path = $student->image;
-        $student->update($request->all());
-        if($request->hasFile('image'))
-        {
-            if($path != 'images/default_student.png')
-            Storage::delete('public/' . $path);
-            $path = $request->image->store('images', 'public');
-            $student->image = $path;
-            $student->save();
+        try {
+            $path = $student->image;
+            $student->update($request->all());
+            if($request->hasFile('image'))
+            {
+                if($path != 'images/default_student.png')
+                Storage::delete('public/' . $path);
+                $path = $request->image->store('images', 'public');
+                $student->image = $path;
+                $student->save();
+            }
+            return redirect('students')->with('status', 'Student has been updated successfully !!!');
+        } catch (\Throwable $th) {
+            throw $th;
         }
-        return redirect('students')->with('status', 'Student has been updated successfully !!!');
     }
 
     /**
@@ -104,6 +108,10 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $path = $student->image;
+        if($path != 'images/default_student.png')
+        Storage::delete('public/' . $path);
+        $student->delete();
+        return redirect('students')->with('status', 'Student has been deleted successfully !!!');
     }
 }

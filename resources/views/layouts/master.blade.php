@@ -41,7 +41,7 @@
         table.table td a.edit {
             color: #FFC107;
         }
-        table.table td a.delete {
+        table.table td button.delete {
             color: #E34724;
         }
         .modal-backdrop {

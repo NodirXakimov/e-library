@@ -55,7 +55,11 @@
                             <td>
                                 <a type="button" class="view" title="View" data-toggle="modal" data-target="#StudentShowModal" data-id="{{ $student->id }}"><i class="material-icons">&#xE417;</i></a>
                                 <a href="{{ route('students.edit', ['student' => $student]) }}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                <form onsubmit="if(!confirm('Is the form filled out correctly?')){return false;}" action="{{ route('students.destroy', ['student' => $student]) }}" style="display: inline-block" method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
