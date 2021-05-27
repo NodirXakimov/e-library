@@ -54,7 +54,7 @@
                             <td>{{ $student->email }}</td>
                             <td>
                                 <a type="button" class="view" title="View" data-toggle="modal" data-target="#StudentShowModal" data-id="{{ $student->id }}"><i class="material-icons">&#xE417;</i></a>
-                                <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                <a href="{{ route('students.edit', ['student' => $student]) }}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                                 <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                             </td>
                         </tr>
@@ -81,13 +81,13 @@
                                 <div class="col col-7">
                                     <table class="table table-hover">
                                         <tbody>
-                                            <tr><td>Firstname:</td><td>Nodir</td></tr>
-                                            <tr><td>Lastname:</td><td>Xakimov</td></tr>
-                                            <tr><td>Middlename:</td><td>Sayfullayevich</td></tr>
-                                            <tr><td>Email:</td><td>nodirxakimov@yandex.ru</td></tr>
-                                            <tr><td>Group:</td><td>310-16</td></tr>
-                                            <tr><td>Course:</td><td>4</td></tr>
-                                            <tr><td>Phone number:</td><td>+998999905518</td></tr>
+                                            <tr><td>Firstname:</td><td id="firstname">Nodir</td></tr>
+                                            <tr><td>Lastname:</td><td id="lastname">Xakimov</td></tr>
+                                            <tr><td>Middlename:</td><td id="middlename">Sayfullayevich</td></tr>
+                                            <tr><td>Email:</td><td id="email">nodirxakimov@yandex.ru</td></tr>
+                                            <tr><td>Group:</td><td id="group">310-16</td></tr>
+                                            <tr><td>Course:</td><td id="course">4</td></tr>
+                                            <tr><td>Phone number:</td><td id="phone_number">+998999905518</td></tr>
                                             <tr><td>Is debtor?:</td><td>No</td></tr>
 
                                         </tbody>
@@ -120,17 +120,22 @@
                 axios.get(url)
                 .then(res => {
                     console.log(res.data);
-                    $("#StudentShowModal img").attr('src', "storage/" + res.data.image);
-                    console.log(res.data.image);
+                    $("#StudentShowModal img").attr('src', "storage/" + res.data.image)
+                    $("#StudentShowModal #firstname").html(res.data.firstname)
+                    $("#StudentShowModal #lastname").html(res.data.lastname)
+                    $("#StudentShowModal #middlename").html(res.data.middlename)
+                    $("#StudentShowModal #email").html(res.data.email)
+                    $("#StudentShowModal #group").html(res.data.group)
+                    $("#StudentShowModal #course").html(res.data.course)
+                    $("#StudentShowModal #phone_number").html(res.data.phone_number)
+                    
+                    let modal = $(this)
+                    modal.find('.modal-title').text(res.data.lastname + ' ' + res.data.firstname)
                 })
                 .catch(err => {
-                    console.error(err); 
+                    console.error(err);
+                    $("#StudentShowModal").modal('hide'); 
                 })
-                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                var modal = $(this)
-                modal.find('.modal-title').text('New message to ' + 1)
-                modal.find('.modal-body input').val(1)
             })
         });
     </script>
