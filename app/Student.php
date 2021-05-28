@@ -15,7 +15,7 @@ class Student extends Model
     *
     * @return \Illuminate\Database\Eloquent\Relations\HasMany
     */
-   public function debts(): HasMany
+   public function debts()
    {
        return $this->hasMany(Debtor::class, 'student_id');
    }

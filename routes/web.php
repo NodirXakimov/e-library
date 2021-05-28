@@ -20,7 +20,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/customers', 'CustomerController');
     Route::resource('/students', 'StudentController');
     Route::resource('/books', 'BookController');
-    Route::resource('/debtors', 'DebtorController');
+    Route::get('/debtors', 'DebtorController@index')->name('debtors.index');
+    Route::get('/debtors/{student}', 'DebtorController@show')->name('debtors.show');
     Route::view('/importBooks', 'admin.import_book')->name('importBook');
     Route::post('/importBooks', 'FetchController@importBook')->name('import_books');
     Route::view('/importStudents', 'admin.import_student')->name('importStudents');
@@ -28,7 +29,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/main', function(){
         return view('admin.index');
     })->name('dashboard');
-
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Debtor;
+use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,28 +16,10 @@ class DebtorController extends Controller
      */
     public function index()
     {
+        $students = Student::has('debts')->with('debts')->paginate();
+        // return  $students;
+        return view('admin.debtors', ['students'=> $students]);
 
-
-        // $debtors = Debtor::first()->book()->get();
-        $debtors = Debtor::with(['student'])->orderBy('created_at', 'desc')->paginate();
-        // $debtors = $debtors->countBy('student_id');
-        // return $debtors;
-        // $debtors->all();
-
-        // $users = DB::table('users')
-        //     ->join('contacts', 'users.id', '=', 'contacts.user_id')
-        //     ->join('orders', 'users.id', '=', 'orders.user_id')
-        //     ->select('users.*', 'contacts.phone', 'orders.price')
-        //     ->get();
-
-        // $debtors = DB::table('debtors')
-        //     ->select('students.firstname', 'students.lastname', 'students.group')
-        //     ->join('students', 'debtors.student_id', '=', 'students.id')
-        //     ->groupBy('students.firstname')
-        //     ->get();
-        // return $debtors;
-
-        return view('admin.debtors', ['debtors'=> $debtors]);
     }
 
     /**
@@ -66,9 +49,13 @@ class DebtorController extends Controller
      * @param  \App\Debtor  $debtor
      * @return \Illuminate\Http\Response
      */
-    public function show(Debtor $debtor)
+    public function show(Student $student)
     {
-        //
+        $books = [];
+        foreach ($student->debts as $debt) {
+            array_push($books, $debt->book);
+        }
+        return view('admin.debtors_show', ['student'=>$student, 'books'=>$books]);
     }
 
     /**

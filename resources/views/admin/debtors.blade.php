@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="table-responsive table-responsive-data2">
-            @if (isset($debtors))
+            @if (isset($students))
             <table class="table table-data2">
                 <thead>
                     <tr>
@@ -51,14 +51,12 @@
                         <th>Student</th>
                         <th>Group</th>
                         <th>Phone number</th>
-                        <th>Book</th>
-                        <th>Take on</th>
-                        <th>Expire at</th>
+                        <th>Count of given books</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                   @foreach ($debtors as $debtor)
+                   @foreach ($students as $student)
                     <tr class="tr-shadow">
                         <td>
                             <label class="au-checkbox">
@@ -66,15 +64,13 @@
                                 <span class="au-checkmark"></span>
                             </label>
                         </td>
-                        <td>{{ $debtor->student->lastname }} {{ $debtor->student->firstname }}</td>
+                        <td><a href="{{ route('debtors.show', ['student' => $student]) }}">{{ $student->lastname }} {{ $student->firstname }}</a></td>
                         <td>
-                            <span class="block-email">{{ $debtor->student->group }}</span>
+                            <span class="block-email">{{ $student->group }}</span>
                         </td>
-                        <td class="desc">{{ $debtor->student->phone_number }}</td>
-                        <td>{{ $debtor->book->name }}</td>
-                        <td>{{ $debtor->student->created_at }}</td>
+                        <td class="desc">{{ $student->phone_number }}</td>
                         <td>
-                            <span class="status--process">{{ $debtor->expiration_date }}</span>
+                            <span class="status--process text-danger"><b>{{ Count($student->debts) }}</b></span>
                         </td>
                         <td>
                             <div class="table-data-feature">
@@ -98,7 +94,7 @@
                 </tbody>
             </table>
             <!-- Pagination links -->
-            {{ $debtors->links() }}
+            {{ $students->links() }}
             @endif
         </div>
         <!-- END DATA TABLE -->
