@@ -22,7 +22,7 @@
             </div>
         </div>
         @if (session('status'))
-            <div class="alert alert-success">
+            <div class="alert alert-success" id="status_alert">
                 {{ session('status') }}
             </div>
         @endif
@@ -61,6 +61,7 @@
         $(document).ready(function(){
             $("#nav li[class='active']").removeClass('active');
             $("#nav #books_nav").addClass('active');
+            $('#status_alert').fadeOut(3000, 'swing');
         });
     </script>
 @endsection
