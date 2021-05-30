@@ -182,7 +182,11 @@
                     <ul class="list-unstyled navbar__list">
                         <li id="dashboard_nav">
                             <a href="{{ route('dashboard') }}">
-                                <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                                <i class="fas fa-upload"></i>Give book</a>
+                        </li>
+                        <li id="take_book_nav">
+                            <a href="{{ route('take') }}">
+                                <i class="fas fa-download"></i>Take book</a>
                         </li>
                         <li id="students_nav" class="active">
                             <a href="{{ route('students.index') }}">

@@ -41,6 +41,16 @@ class FetchController extends Controller
         return $student;
     }
 
+    public function getDebtorStudent(Request $request)
+    {
+        // $request->validate([
+        //     'id' => 'required',
+        // ]);
+        $id = $request->id;
+        $student = Student::has('debts')->get();
+        return $student;
+    }
+
     public function getBook(Request $request)
     {
         // $request->validate([

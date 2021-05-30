@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="alert alert-success alert-dismissible" id="alert_attached" style="display: none">
+<div class="alert alert-success alert-dismissible" id="alert_detach" style="display: none">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     <strong>Success!</strong> Books succesfully attached.
 </div>
@@ -94,41 +94,12 @@
     </div>
     <div>
         <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-            <i class="fa fa-lock fa-lg"></i>&nbsp;
-            <span id="attachButton">Attach</span>
+            <i class="fa fa-unlock fa-lg"></i>&nbsp;
+            <span id="detachButton">Detach</span>
             <span id="payment-button-sending" style="display:none;">Sending…</span>
         </button>
     </div>
 </div>
-
-<!-- modal for authentification -->
-<div class="modal fade" id="authModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="mediumModalLabel">Is this you? Prove it!</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center">
-                    <img src="" alt="User's image" id="auth_image">
-                </div>
-                <b class="text-center"><h4 id="auth_fullname" class="my-4"></h4></b>
-                <div class="alert alert-danger" id="authAlert" style="display: none">
-                    <b>Password did not match!</b>
-                </div>
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="authConfirm">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end modal medium -->
 
 @endsection
 
@@ -139,29 +110,39 @@
         $(document).ready(function(){
 
             $("#nav li[class='active']").removeClass('active');
-            $("#nav #dashboard_nav").addClass('active');
+            $("#nav #take_book_nav").addClass('active');
             $("#getStudentButton").on('click', function(){
                 let student_id = $("#student_id").val();
                 if(student_id > 0){
-                    axios.get(`api/students/${student_id}`, {
+                    axios.get(`api/students/debtors/${student_id}`, {
                         id: student_id
                     }).then(result => {
                         console.log(result);
-                        $('#auth_image').attr('src', 'storage/' + result.data.image);
-                        $('#auth_fullname').html(result.data.lastname + ' ' + result.data.firstname + ' ' + result.data.middlename);
+                        stored_student_id = result.data.id;
+                        $("#alert").hide();
+                        $('#card-header').html(result.data.lastname + " " + result.data.firstname + ' ' + result.data.middlename);   
+                        let body = `
+                        <div class="row">
+                            <div class="col col-md-7">
+                                <p>Group: <strong>${result.data.group}</strong></p>
+                                <p>Phone number: <strong>${result.data.phone_number}</strong></p>
+                                <p>Email: <strong>${result.data.email}</strong></p>
+                            </div>
+                            <div class="col col-md-5">
+                                <img src="{{ asset('storage/${result.data.image}') }}" alt="Student's photo" style="width:300px; border-radius:5%">
+                            </div>
+                        </div>  
+                        `;
+                        $('#card-body').html(body);   
+                        $("#card").show();
                     }).catch(error => {
                         console.log("An error occured " + error);
                         $("#card").hide();
                         $("#alert").show();
                     });
-                    
-                    $('#authModal').modal('show');
-
                 } else {
-                    $("#card").hide();
                     $("#alert").show();
                 }
-                // hookStudent();
             });
             $("#getBookButton").on('click', function(){
                 let book_id = $("#book_id").val();
@@ -187,17 +168,17 @@
                     })
                 }
             });
-            $("#attachButton").on('click', function(){
+            $("#detachButton").on('click', function(){
                 if(attachable()){
-                    // console.log(stored_books);
-                    // console.log(stored_student_id);
+                    console.log(stored_books);
+                    console.log(stored_student_id);
                     axios.post("/api/attach", {
                         student_id: stored_student_id,
                         books: stored_books
                     }).then(response => {
-                        // console.log(response);
-                        $('#alert_attached').show();
-                        $('#alert_attached').fadeOut(3000, 'swing');
+                        console.log(response);
+                        $('#alert_detach').show();
+                        $('#alert_detach').fadeOut(3000, 'swing');
                         clearAttaches();
                         // location.reload();
                     }).catch(error => {
@@ -207,59 +188,8 @@
                 else
                     alert('Not attachable');
             });
-            $("#authConfirm").on('click', function(){
-                let pass = $('#password').val();
-                let student_id = $("#student_id").val();
-                axios.post('/authStudent', {password: pass, student_id: student_id})
-                .then(result => {
-                    console.log(result);
-                    if(result.data.status === true){
-                        hookStudent();
-                        $('#authModal').modal('hide');
-                    } else{
-                        $('#password').val('');
-                        $('#authAlert').show();
-                    }
-
-                }).catch(err => {
-                    console.log(err);
-                })
-            });
         });
-        function hookStudent() {
-            let student_id = $("#student_id").val();
-                if(student_id > 0){
-                    axios.get(`api/students/${student_id}`, {
-                        id: student_id
-                    }).then(result => {
-                        stored_student_id = result.data.id;
-                        $("#alert").hide();
-                        $('#card-header').html(result.data.lastname + " " + result.data.firstname + ' ' + result.data.middlename);   
-                        let body = `
-                            <div class="row">
-                                <div class="col col-md-7">
-                                    <p>Group: <strong>${result.data.group}</strong></p>
-                                    <p>Phone number: <strong>${result.data.phone_number}</strong></p>
-                                    <p>Email: <strong>${result.data.email}</strong></p>
-                                </div>
-                                <div class="col col-md-5">
-                                    <img src="{{ asset('storage/${result.data.image}') }}" alt="Student's photo" style="width:300px; border-radius:5%">
-                                </div>
-                            </div>
-                        `;
-                        $('#card-body').html(body);   
-                        $("#card").show();
-                    }).catch(error => {
-                        console.log("An error occured " + error);
-                        $("#card").hide();
-                        $("#alert").show();
-                    });
-                } else {
-                    $("#alert").show();
-                    $('#card').attr('style', 'display:none');
-                    stored_student_id = null;
-                }
-        }
+
         function hookBooks(){
             if(stored_books.length >= 1){
                 let tbody = '';

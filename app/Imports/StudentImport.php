@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Student;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Facades\Hash;
 
 class StudentImport implements ToModel
 {
@@ -22,6 +23,7 @@ class StudentImport implements ToModel
             'group'         => $row[5],
             'course'        => $row[6],
             'phone_number'  => $row[7],
+            'password'      => Hash::make($row[8]),
         ]);
     }
 }

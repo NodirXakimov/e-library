@@ -12,8 +12,9 @@
 */
 
 use App\Debtor;
-
-Route::redirect('/', '/main', 301);
+use App\Student;
+use App\Book;
+Route::redirect('/', '/give', 301);
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -26,9 +27,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/importBooks', 'FetchController@importBook')->name('import_books');
     Route::view('/importStudents', 'admin.import_student')->name('importStudents');
     Route::post('/importStudents', 'FetchController@importStudent')->name('import_students');
-    Route::get('/main', function(){
+    Route::post('/authStudent', 'StudentController@checkAuth');
+    Route::get('/give', function(){
         return view('admin.index');
     })->name('dashboard');
+    Route::get('/take', function(){
+        return view('admin.take');
+    })->name('take');
+
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -36,8 +42,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::prefix('api')->group(function () {
     Route::get('/students', 'FetchController@index')->name("getAllStudents");
     Route::get('/students/{id}', 'FetchController@getStudent')->name("getStudent");
+    Route::get('/students/debtor/{id}', 'FetchController@getDebtorStudent')->name("getDebtorStudent");
     Route::get('/books/{id}', 'FetchController@getBook')->name("getBook");
     Route::post('/attach', 'FetchController@attach')->name("attach");
 });
-
-Route::view('/test', 'ajax');

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     protected $fillable = [
-        'firstname', 'lastname', 'middlename', 'email', 'group', 'course', 'phone_number', 'image'
+        'firstname', 'lastname', 'middlename', 'email', 'group', 'course', 'phone_number', 'image', 'password'
     ];
 
    /**
@@ -19,4 +19,13 @@ class Student extends Model
    {
        return $this->hasMany(Debtor::class, 'student_id');
    }
+   /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+    ];
+
 }

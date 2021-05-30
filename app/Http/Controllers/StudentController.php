@@ -6,6 +6,7 @@ use App\Http\Requests\StudentRequest;
 use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -113,5 +114,19 @@ class StudentController extends Controller
         Storage::delete('public/' . $path);
         $student->delete();
         return redirect('students')->with('status', 'Student has been deleted successfully !!!');
+    }
+
+    public function checkAuth(Request $request)
+    {
+        $student = Student::findOrFail($request->student_id);
+        if (Hash::check($request->password, $student->password)) {
+            return [
+                'status' => true
+            ];
+        } else {
+            return [
+                'status' => false
+            ];
+        }
     }
 }
