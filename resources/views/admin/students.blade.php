@@ -22,7 +22,7 @@
             </div>
         </div>
         @if (session('status'))
-            <div class="alert alert-success" id="status_alert">
+            <div class="alert alert-success">
                 {{ session('status') }}
             </div>
         @endif
@@ -44,7 +44,7 @@
                 <tbody>
                     @foreach ($students as $student)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $student->id }}</td>
                             <td>{{ $student->firstname }}</td>
                             <td>{{ $student->lastname }}</td>
                             <td>{{ $student->middlename }}</td>
@@ -116,7 +116,6 @@
         $(document).ready(function(){
             $("#nav li[class='active']").removeClass('active');
             $("#nav #students_nav").addClass('active');
-            $('#status_alert').fadeOut(3000, 'swing');
             
             $('#StudentShowModal').on('show.bs.modal', function (event) {
                 let button = $(event.relatedTarget) // Button that triggered the modal
