@@ -31,6 +31,7 @@ class StudentRequest extends FormRequest
             'phone_number' => 'required',
             'email' => 'email|required',
             'course' => 'required',
+            'password' => 'required|min:8',
             'image' => 'sometimes|image|mimes:jpg,jpeg,bmp,svg,png|max:5000'
         ];
     }

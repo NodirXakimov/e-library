@@ -149,13 +149,14 @@
                         console.log(result);
                         $('#auth_image').attr('src', 'storage/' + result.data.image);
                         $('#auth_fullname').html(result.data.lastname + ' ' + result.data.firstname + ' ' + result.data.middlename);
+                        $('#authAlert').hide();
+                        $('#alert').hide();
+                        $('#authModal').modal('show');
                     }).catch(error => {
                         console.log("An error occured " + error);
                         $("#card").hide();
                         $("#alert").show();
                     });
-                    
-                    $('#authModal').modal('show');
 
                 } else {
                     $("#card").hide();
@@ -168,7 +169,11 @@
                 $("#book_alert").hide();
 
                 if (book_id < 1) {
-                    $("#book_alert").show();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Book is not available',
+                        text: 'Something went wrong!'
+                        })
                 } else {
                     $("#book_alert").hide();
                     axios.get(`/api/books/${book_id}`)
@@ -178,12 +183,20 @@
                         if(!hasBookStored(book_id))
                             stored_books.push(result.data);
                         else 
-                            $("#book_alert").show();
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'Book is not available',
+                            text: 'Something went wrong!'
+                            })
                         console.log(stored_books);
                         hookBooks();
                     }).catch(error => {
                         console.log('error accured in getting book');
-                        $("#book_alert").show();
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Book is not available',
+                        text: 'Something went wrong!'
+                        })
                     })
                 }
             });

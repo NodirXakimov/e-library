@@ -462,6 +462,8 @@
     </div>
     {{-- <script src="js/vue.js"></script> --}}
     <script src="{{ asset('js/axios.min.js') }}"></script>
+    <!-- Sweet Alert 2 JS-->
+    <script src="{{ asset('js/sweetalert2.all.js') }}"></script>
     <!-- Jquery JS-->
     <script src="{{ asset('vendor/jquery-3.2.1.min.js') }}"></script>
     <!-- Bootstrap JS-->
