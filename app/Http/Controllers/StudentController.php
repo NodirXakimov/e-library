@@ -41,6 +41,7 @@ class StudentController extends Controller
     {
         try {
             $student = new Student($request->all());
+            $student->password = Hash::make($request->password); 
             if($request->hasFile('image'))
             {
                 $path = $request->image->store('images', 'public');

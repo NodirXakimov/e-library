@@ -66,9 +66,9 @@
                         </button>
                     </div>
                 </div>
-                <div class="alert alert-danger" style="display: none" id="book_alert">
+                {{-- <div class="alert alert-danger" style="display: none" id="book_alert">
                     <strong>Warning!</strong> Book is not available
-                </div>
+                </div> --}}
                 <div class="row mt-5" style="display: none" id="book_table">
                         <!-- DATA TABLE -->
                         <div class="table-responsive table-responsive-data2">
@@ -116,9 +116,9 @@
                     <img src="" alt="User's image" id="auth_image">
                 </div>
                 <b class="text-center"><h4 id="auth_fullname" class="my-4"></h4></b>
-                <div class="alert alert-danger" id="authAlert" style="display: none">
+                {{-- <div class="alert alert-danger" id="authAlert" style="display: none">
                     <b>Password did not match!</b>
-                </div>
+                </div> --}}
                 <input type="password" class="form-control" name="password" id="password" placeholder="Password">
             </div>
             <div class="modal-footer">
@@ -149,18 +149,26 @@
                         console.log(result);
                         $('#auth_image').attr('src', 'storage/' + result.data.image);
                         $('#auth_fullname').html(result.data.lastname + ' ' + result.data.firstname + ' ' + result.data.middlename);
-                        $('#authAlert').hide();
-                        $('#alert').hide();
+                        // $('#authAlert').hide();
+                        // $('#alert').hide();
                         $('#authModal').modal('show');
                     }).catch(error => {
                         console.log("An error occured " + error);
                         $("#card").hide();
-                        $("#alert").show();
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Student not found',
+                        text: 'Something went wrong!'
+                        })
                     });
 
                 } else {
                     $("#card").hide();
-                    $("#alert").show();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Student not found',
+                        text: 'Something went wrong!'
+                        })
                 }
                 // hookStudent();
             });
@@ -223,15 +231,27 @@
             $("#authConfirm").on('click', function(){
                 let pass = $('#password').val();
                 let student_id = $("#student_id").val();
+                console.log(pass);
                 axios.post('/authStudent', {password: pass, student_id: student_id})
                 .then(result => {
                     console.log(result);
                     if(result.data.status === true){
                         hookStudent();
                         $('#authModal').modal('hide');
+                        Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'You have successfully passed the authorization',
+                        showConfirmButton: false,
+                        timer: 1500
+                        })
                     } else{
                         $('#password').val('');
-                        $('#authAlert').show();
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Password did not match!!!',
+                        text: 'Something went wrong!'
+                        })
                     }
 
                 }).catch(err => {
@@ -246,7 +266,7 @@
                         id: student_id
                     }).then(result => {
                         stored_student_id = result.data.id;
-                        $("#alert").hide();
+                        // $("#alert").hide();
                         $('#card-header').html(result.data.lastname + " " + result.data.firstname + ' ' + result.data.middlename);   
                         let body = `
                             <div class="row">
@@ -265,10 +285,20 @@
                     }).catch(error => {
                         console.log("An error occured " + error);
                         $("#card").hide();
-                        $("#alert").show();
+                        // $("#alert").show();
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Student not found',
+                        text: 'Something went wrong!'
+                        })
                     });
                 } else {
-                    $("#alert").show();
+                    // $("#alert").show();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Student not found',
+                        text: 'Something went wrong!'
+                        })
                     $('#card').attr('style', 'display:none');
                     stored_student_id = null;
                 }
