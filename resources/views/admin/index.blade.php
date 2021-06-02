@@ -226,7 +226,10 @@
                     });
                 }
                 else
-                    alert('Not attachable');
+                Swal.fire({
+                icon: 'warning',
+                title: 'Student or book did not selected'
+                })
             });
             $("#authConfirm").on('click', function(){
                 let pass = $('#password').val();
