@@ -42,7 +42,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::prefix('api')->group(function () {
     Route::get('/students', 'FetchController@index')->name("getAllStudents");
     Route::get('/students/{id}', 'FetchController@getStudent')->name("getStudent");
-    Route::get('/students/debtor/{id}', 'FetchController@getDebtorStudent')->name("getDebtorStudent");
+    Route::get('/students/debtors/{id}', 'FetchController@getDebtorStudent')->name("getDebtorStudent");
+    Route::get('/students/debtors/{id}/books', 'FetchController@getBooksOfDebtor')->name("getBooksOfDebtor");
     Route::get('/books/{id}', 'FetchController@getBook')->name("getBook");
     Route::post('/attach', 'FetchController@attach')->name("attach");
+    Route::post('/detach', 'FetchController@detach')->name("detach");
 });

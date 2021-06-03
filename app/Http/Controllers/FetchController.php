@@ -46,9 +46,33 @@ class FetchController extends Controller
         // $request->validate([
         //     'id' => 'required',
         // ]);
-        $id = $request->id;
-        $student = Student::has('debts')->get();
-        return $student;
+        try {
+            $id = $request->id;
+            $student = Student::findOrFail($id);
+            if(count($student->debts) > 0)
+                return [
+                        'status'  => true,
+                        'student' => $student 
+                        ];
+            else
+                return ['status' => false];
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function getBooksOfDebtor(Request $request)
+    {
+        try {
+            $books = [];
+            $student = Student::findOrFail($request->id);
+            foreach ($student->debts as $key => $debt) {
+                array_push($books, $debt->book);
+            }
+            return $books;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     public function getBook(Request $request)
@@ -75,6 +99,21 @@ class FetchController extends Controller
                 ]);
             }
         return $request->student_id;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
+    }
+
+    public function detach(Request $request)
+    {
+        try {
+            foreach ($request->books as $key => $book_id) 
+            {
+                $debt = Debtor::where('student_id', $request->student_id)->where('book_id', $book_id)->first();
+                $debt->delete();
+            }
+            return $request->student_id;
         } catch (\Throwable $th) {
             throw $th;
         }

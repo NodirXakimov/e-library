@@ -35,9 +35,9 @@
                         <div class="card-header" id="card-header"></div>
                         <div class="card-body" id="card-body"></div>
                     </div>
-                    <div class="alert alert-danger" style="display: none" id="alert">
+                    {{-- <div class="alert alert-danger" style="display: none" id="alert">
                         <strong>Warning!</strong> Student not found.
-                    </div>  
+                    </div>   --}}
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
                     <h3 class="text-center title-2">Book info</h3>
                 </div><hr>
                 <div class="row my-3">
-                    <div class="col-sm-12">
+                    {{-- <div class="col-sm-12">
                         <label for="id" class="control-label mb-1">Book's ID</label>
                     </div>
                     <div class="col col-sm-6">
@@ -64,7 +64,7 @@
                             <span id="payment-button-amount">Get Book</span>
                             <span id="payment-button-sending" style="display:none;">Sending…</span>
                         </button>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="alert alert-danger" style="display: none" id="book_alert">
                     <strong>Warning!</strong> Book is not available
@@ -107,6 +107,7 @@
     <script>
         let stored_books = [];
         let stored_student_id = null;
+        let checkedBooks = [];
         $(document).ready(function(){
 
             $("#nav li[class='active']").removeClass('active');
@@ -118,18 +119,19 @@
                         id: student_id
                     }).then(result => {
                         console.log(result);
-                        stored_student_id = result.data.id;
-                        $("#alert").hide();
-                        $('#card-header').html(result.data.lastname + " " + result.data.firstname + ' ' + result.data.middlename);   
+                        stored_student_id = result.data.student.id;
+                        getBooksOfDebtor(stored_student_id);
+                        // $("#alert").hide();
+                        $('#card-header').html(result.data.student.lastname + " " + result.data.student.firstname + ' ' + result.data.student.middlename);   
                         let body = `
                         <div class="row">
                             <div class="col col-md-7">
-                                <p>Group: <strong>${result.data.group}</strong></p>
-                                <p>Phone number: <strong>${result.data.phone_number}</strong></p>
-                                <p>Email: <strong>${result.data.email}</strong></p>
+                                <p>Group: <strong>${result.data.student.group}</strong></p>
+                                <p>Phone number: <strong>${result.data.student.phone_number}</strong></p>
+                                <p>Email: <strong>${result.data.student.email}</strong></p>
                             </div>
                             <div class="col col-md-5">
-                                <img src="{{ asset('storage/${result.data.image}') }}" alt="Student's photo" style="width:300px; border-radius:5%">
+                                <img src="{{ asset('storage/${result.data.student.image}') }}" alt="Student's photo" style="width:300px; border-radius:5%">
                             </div>
                         </div>  
                         `;
@@ -138,43 +140,33 @@
                     }).catch(error => {
                         console.log("An error occured " + error);
                         $("#card").hide();
-                        $("#alert").show();
+                        // $("#alert").show();
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'You do not have any credits',
+                        text: 'You are free as a bird!'
+                        })
+                        
                     });
                 } else {
-                    $("#alert").show();
-                }
-            });
-            $("#getBookButton").on('click', function(){
-                let book_id = $("#book_id").val();
-                $("#book_alert").hide();
-
-                if (book_id < 1) {
-                    $("#book_alert").show();
-                } else {
-                    $("#book_alert").hide();
-                    axios.get(`/api/books/${book_id}`)
-                    .then(result => {
-                        console.log('Book_id = ' + book_id);
-                        console.log(result);
-                        if(!hasBookStored(book_id))
-                            stored_books.push(result.data);
-                        else 
-                            $("#book_alert").show();
-                        console.log(stored_books);
-                        hookBooks();
-                    }).catch(error => {
-                        console.log('error accured in getting book');
-                        $("#book_alert").show();
-                    })
+                    // $("#alert").show();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Student not found',
+                        text: 'Something went wrong!'
+                        })
                 }
             });
             $("#detachButton").on('click', function(){
+                $('input[type=checkbox]:checked').each(function() {
+                    checkedBooks.push($(this).val());
+                });
                 if(attachable()){
                     console.log(stored_books);
                     console.log(stored_student_id);
-                    axios.post("/api/attach", {
+                    axios.post("/api/detach", {
                         student_id: stored_student_id,
-                        books: stored_books
+                        books: checkedBooks
                     }).then(response => {
                         console.log(response);
                         $('#alert_detach').show();
@@ -186,7 +178,10 @@
                     });
                 }
                 else
-                    alert('Not attachable');
+                    Swal.fire({
+                    icon: 'warning',
+                    title: 'Student or book did not selected'
+                    })
             });
         });
 
@@ -201,9 +196,10 @@
                         <td>${book.publisher_name}</td>
                         <td>
                             <div class="table-data-feature">
-                                <button onclick="removeFromStoredBooks(${book.id})" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                    <i class="zmdi zmdi-delete"></i>
-                                </button>
+                                <label class="au-checkbox">
+                                    <input type="checkbox" name="book_id" value="${book.id}">
+                                    <span class="au-checkmark"></span>
+                                </label>
                             </div>
                         </td>
                     </tr>
@@ -253,6 +249,17 @@
                 stored_books.splice(removableIndex, 1);
                 hookBooks();
             }
+        }
+        function getBooksOfDebtor(id) {
+            // alert(id);
+            axios.get(`api/students/debtors/${id}/books`, { id: id})
+                .then(result => {
+                    stored_books = result.data;
+                    console.log(result.data);
+                    hookBooks();
+                }).catch(err => {
+                    console.log(err);
+                })
         }
     </script>
 @endsection
