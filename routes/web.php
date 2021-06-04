@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/importStudents', 'admin.import_student')->name('importStudents');
     Route::post('/importStudents', 'FetchController@importStudent')->name('import_students');
     Route::post('/authStudent', 'StudentController@checkAuth');
+    Route::get('/export', 'DebtorController@export')->name('export.debtors');
     Route::get('/give', function(){
         return view('admin.index');
     })->name('dashboard');

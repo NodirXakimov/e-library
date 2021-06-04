@@ -28,11 +28,12 @@
             </div>
             <div class="table-data__tool-right">
                 <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
-                    <select class="js-select2" name="type">
-                        <option selected="selected">Export</option>
+                    {{-- <select class="js-select2" name="type">
+                        <option selected="selected"><a href="{{ route('export.debtors') }}">Export</a></option>
                         <option value="">Option 1</option>
                         <option value="">Option 2</option>
-                    </select>
+                    </select> --}}
+                    <a href="{{ route('export.debtors') }}" class="btn btn-secondary"><i class="zmdi zmdi-print"></i> Export</a>
                     <div class="dropDownSelect2"></div>
                 </div>
             </div>

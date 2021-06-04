@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Debtor;
 use App\Student;
+use App\Exports\DebtorsExportView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DebtorController extends Controller
 {
@@ -58,6 +60,10 @@ class DebtorController extends Controller
         return view('admin.debtors_show', ['student'=>$student, 'books'=>$books]);
     }
 
+    public function export()
+    {
+        return Excel::download(new DebtorsExportView(), 'debtors.xlsx');
+    }
     /**
      * Show the form for editing the specified resource.
      *

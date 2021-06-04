@@ -3,7 +3,7 @@
 @section('content')
 <div class="alert alert-success alert-dismissible" id="alert_detach" style="display: none">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <strong>Success!</strong> Books succesfully attached.
+    <strong>Success!</strong> Books succesfully detached.
 </div>
 <div class="row" id="app">
     <div class="col-lg-5">

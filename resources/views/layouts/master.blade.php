@@ -200,7 +200,7 @@
                             <a href="{{ route('debtors.index') }}">
                                 <i class="far fa-check-square"></i>Debtor</a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="calendar.html">
                                 <i class="fas fa-calendar-alt"></i>Calendar</a>
                         </li>
@@ -261,7 +261,7 @@
                                     <a href="typo.html">Typography</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                     </ul>
                 </nav>
             </div>
