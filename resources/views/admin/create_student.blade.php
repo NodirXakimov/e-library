@@ -97,7 +97,7 @@
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="password" class=" form-control-label">Phone number</label>
+                                <label for="password" class=" form-control-label">Password</label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <input type="password" id="password" name="password" placeholder="Set a password" class="form-control">
