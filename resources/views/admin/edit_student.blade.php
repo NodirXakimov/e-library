@@ -99,6 +99,18 @@
 
                         <div class="row form-group">
                             <div class="col col-md-3">
+                                <label for="password" class=" form-control-label">Password</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="password" id="password" name="password" placeholder="Update the password (Not required)" class="form-control">
+                                @error('password')
+                                    <small class="text-danger">*{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label">Select picture</label>
                             </div>
                             <div class="col-12 col-md-9">

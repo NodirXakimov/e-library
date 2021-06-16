@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
+use App\Http\Requests\StudentUpdateRequest;
 use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -83,11 +84,43 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(StudentRequest $request, Student $student)
+    public function update(Request $request, Student $student)
     {
+        if($request->password != null)
+            $request->validate([
+                'firstname' => 'required|max:255',
+                'lastname' => 'required',
+                'middlename' => 'required',
+                'group' => 'required',
+                'phone_number' => 'required',
+                'email' => 'email|required',
+                'course' => 'required',
+                'password' => 'required|min:8',
+                'image' => 'sometimes|image|mimes:jpg,jpeg,bmp,svg,png|max:5000'
+            ]);
+        else 
+        {
+            $request->validate([
+                'firstname' => 'required|max:255',
+                'lastname' => 'required',
+                'middlename' => 'required',
+                'group' => 'required',
+                'phone_number' => 'required',
+                'email' => 'email|required',
+                'course' => 'required',
+                'image' => 'sometimes|image|mimes:jpg,jpeg,bmp,svg,png|max:5000'
+            ]);
+            unset($request['password']);
+        }
+
         try {
             $path = $student->image;
             $student->update($request->all());
+            if($request->has('password'))
+            {
+                $student->password = Hash::make($request->password); 
+                $student->save();
+            }
             if($request->hasFile('image'))
             {
                 if($path != 'images/default_student.png')
